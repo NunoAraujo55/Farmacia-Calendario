@@ -18,7 +18,7 @@ def gerar_escala():
     
     return escala_dias
 
-def obter_farmacia(dia, mes, hora, ano=2025):
+def obter_farmacia(dia, mes, hora, minuto, ano=2025):
     primeiro_dia = datetime.date(ano, 1, 1)
     dia_do_ano = (datetime.date(ano, mes, dia) - primeiro_dia).days
     
@@ -32,16 +32,15 @@ def obter_farmacia(dia, mes, hora, ano=2025):
 
 def mostrar_farmacia():
     agora = datetime.datetime.now()
-    dia, mes, hora = agora.day, agora.month, agora.hour
-    farmacia = obter_farmacia(dia, mes, hora)
+    dia, mes, hora, minuto = agora.day, agora.month, agora.hour, agora.minute
+    farmacia = obter_farmacia(dia, mes, hora, minuto)
     ttLabel.config(text=f"Farmácia de serviço dia {dia}/{mes}")
     resultado_label.config(text=f"{farmacia}")
 
 def atualizar_farmacia():
-    agora = datetime.datetime.now()
-    if agora.hour == 9:  # Atualiza exatamente às 9h da manhã
-        mostrar_farmacia()
-    root.after(60000, atualizar_farmacia)  # Verifica a cada minuto
+    # Atualiza a exibição a cada segundo
+    mostrar_farmacia()
+    root.after(1000, atualizar_farmacia)  # 1000 ms = 1 segundo
 
 def sair_fullscreen(event=None):
     root.attributes("-fullscreen", False)  # Sai do modo fullscreen
@@ -50,7 +49,7 @@ def sair_fullscreen(event=None):
 # Criando interface gráfica
 root = tk.Tk()
 root.title("Farmácia de Serviço")
-root.attributes("-fullscreen", True)  # Define a janela para ocupar toda a tela
+root.attributes("-fullscreen", True)  # Janela em tela cheia
 root.configure(bg="white")
 
 frame = ttk.Frame(root, padding=20, style="TFrame")
@@ -59,7 +58,7 @@ frame.place(relx=0.5, rely=0.5, anchor="center")
 style = ttk.Style()
 style.configure("TFrame", background="white")
 style.configure("TLabel", background="white", foreground="black", font=("Arial", 14))
-style.configure("Farmacia.TLabel", font=("Arial", 28, "bold"), foreground="blue")  # Define estilo da farmácia
+style.configure("Farmacia.TLabel", font=("Arial", 28, "bold"), foreground="blue")
 
 agora = datetime.datetime.now()
 dia, mes = agora.day, agora.month
@@ -72,14 +71,15 @@ ttLabel.pack(pady=10)
 resultado_label = ttk.Label(frame, text="Carregando...", style="Farmacia.TLabel", anchor="center")
 resultado_label.pack(pady=20)
 
-
 # Vincular tecla "Esc" para sair do fullscreen
 root.bind("<Escape>", sair_fullscreen)
 
 mostrar_farmacia()
-atualizar_farmacia()  # Inicia a atualização automática às 9h
+atualizar_farmacia()  # Inicia a atualização contínua em runtime
 
 root.mainloop()
+
+
 
 
 
