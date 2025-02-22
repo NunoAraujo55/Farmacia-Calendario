@@ -31,53 +31,50 @@ def obter_farmacia(dia, mes, hora, ano=2025):
     return escala.get(dia_do_ano, "Desconhecido")
 
 def mostrar_farmacia():
-    global ultimo_dia, ultima_hora
     agora = datetime.datetime.now()
     dia, mes, hora = agora.day, agora.month, agora.hour
     farmacia = obter_farmacia(dia, mes, hora)
-    
-    resultado_label.config(text=f"Farmácia de serviço: {farmacia}")
     ttLabel.config(text=f"Farmácia de serviço dia {dia}/{mes}")
-    
-    # Atualiza os últimos valores
-    ultimo_dia, ultima_hora = dia, hora
-    
-def atualizar_farmacia():
-    agora = datetime.datetime.now()
-    dia, mes, hora = agora.day, agora.month, agora.hour
-    
-    # Se o dia mudou ou passou das 9h, atualiza a farmácia
-    if hora >= 9 and (dia != ultimo_dia or hora != ultima_hora):
-        mostrar_farmacia()
-    
-    # Verifica novamente a cada minuto
-    root.after(60000, atualizar_farmacia)
+    resultado_label.config(text=f"{farmacia}")
 
 # Criando interface gráfica
 root = tk.Tk()
 root.title("Farmácia de Serviço")
-root.geometry("300x150")
+root.attributes("-fullscreen", True)  # Define a janela para ocupar toda a tela
+root.configure(bg="white")
 
-frame = ttk.Frame(root, padding=10)
-frame.grid()
+def sair_fullscreen(event=None):
+    root.attributes("-fullscreen", False)  # Sai do modo fullscreen
+    root.geometry("800x600")  # Define um tamanho padrão para a janela
+
+# Vincular a tecla "Esc" para sair do fullscreen
+root.bind("<Escape>", sair_fullscreen)
+
+
+frame = ttk.Frame(root, padding=20, style="TFrame")
+frame.place(relx=0.5, rely=0.5, anchor="center")
+
+style = ttk.Style()
+style.configure("TFrame", background="white")
+style.configure("TLabel", background="white", foreground="black", font=("Arial", 14))
+style.configure("Farmacia.TLabel", font=("Arial", 28, "bold"), foreground="blue")  # Define estilo da farmácia
 
 agora = datetime.datetime.now()
 dia, mes = agora.day, agora.month
 
-# Variáveis para controle da atualização
-ultimo_dia = dia
-ultima_hora = agora.hour
+# Exibir data
+ttLabel = ttk.Label(frame, text=f"Farmácia de serviço dia {dia}/{mes}", font=("Arial", 16, "bold"), anchor="center")
+ttLabel.pack(pady=10)
 
-ttLabel = ttk.Label(frame, text=f"Farmácia de serviço dia {dia}/{mes}")
-ttLabel.grid(column=0, row=0, columnspan=2)
-
-resultado_label = ttk.Label(frame, text="Carregando...")
-resultado_label.grid(column=0, row=1, columnspan=2)
+# Exibir farmácia com nome grande e centralizado (corrigido para usar estilo correto)
+resultado_label = ttk.Label(frame, text="Carregando...", style="Farmacia.TLabel", anchor="center")
+resultado_label.pack(pady=20)
 
 mostrar_farmacia()
-atualizar_farmacia()  # Inicia a atualização automática
 
 root.mainloop()
+
+
 
 
 
