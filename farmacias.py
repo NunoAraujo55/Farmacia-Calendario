@@ -24,7 +24,7 @@ def obter_farmacia(dia, mes, hora, ano=2025):
     
     escala = gerar_escala()
     
-    # Ajustar transição às 9h
+    # Ajustar transição às 9h da manhã
     if hora < 9 and dia_do_ano > 0:
         dia_do_ano -= 1  # Mantém a farmácia do dia anterior
     
@@ -37,19 +37,21 @@ def mostrar_farmacia():
     ttLabel.config(text=f"Farmácia de serviço dia {dia}/{mes}")
     resultado_label.config(text=f"{farmacia}")
 
-# Criando interface gráfica
-root = tk.Tk()
-root.title("Farmácia de Serviço")
-root.attributes("-fullscreen", True)  # Define a janela para ocupar toda a tela
-root.configure(bg="white")
+def atualizar_farmacia():
+    agora = datetime.datetime.now()
+    if agora.hour == 9:  # Atualiza exatamente às 9h da manhã
+        mostrar_farmacia()
+    root.after(60000, atualizar_farmacia)  # Verifica a cada minuto
 
 def sair_fullscreen(event=None):
     root.attributes("-fullscreen", False)  # Sai do modo fullscreen
     root.geometry("800x600")  # Define um tamanho padrão para a janela
 
-# Vincular a tecla "Esc" para sair do fullscreen
-root.bind("<Escape>", sair_fullscreen)
-
+# Criando interface gráfica
+root = tk.Tk()
+root.title("Farmácia de Serviço")
+root.attributes("-fullscreen", True)  # Define a janela para ocupar toda a tela
+root.configure(bg="white")
 
 frame = ttk.Frame(root, padding=20, style="TFrame")
 frame.place(relx=0.5, rely=0.5, anchor="center")
@@ -66,13 +68,19 @@ dia, mes = agora.day, agora.month
 ttLabel = ttk.Label(frame, text=f"Farmácia de serviço dia {dia}/{mes}", font=("Arial", 16, "bold"), anchor="center")
 ttLabel.pack(pady=10)
 
-# Exibir farmácia com nome grande e centralizado (corrigido para usar estilo correto)
+# Exibir farmácia com nome grande e centralizado
 resultado_label = ttk.Label(frame, text="Carregando...", style="Farmacia.TLabel", anchor="center")
 resultado_label.pack(pady=20)
 
+
+# Vincular tecla "Esc" para sair do fullscreen
+root.bind("<Escape>", sair_fullscreen)
+
 mostrar_farmacia()
+atualizar_farmacia()  # Inicia a atualização automática às 9h
 
 root.mainloop()
+
 
 
 
@@ -181,3 +189,6 @@ root.mainloop()
 
 
 '''
+
+
+
