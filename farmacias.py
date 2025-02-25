@@ -5,7 +5,7 @@ import datetime
 def gerar_escala():
     # Ajuste os nomes aqui para combinar com o dicionário abaixo
     escala_farmacias = [
-        "Morais",
+        "Chaves",
         "Costa Gomes",
         "Martins",
         "Barroso",
@@ -110,7 +110,7 @@ def atualizar_informacoes():
     endereco = info.get("endereco", "Desconhecido")
     
     # Atualizar labels de morada e contacto
-    morada_label.config(text=f"Morada: {endereco}")
+    morada_label.config(text=f"Morada: {endereco}", wraplength=1300, anchor="center", justify="center")
     contacto_label.config(text=f"Contacto: {telefone}")
     
     # Atualiza a cada 1 segundo
@@ -156,7 +156,7 @@ ate_label = ttk.Label(frame, text="Até às 9h do dia ...", style="Subtitle.TLab
 ate_label.pack(pady=(0, 90))
 
 morada_label = ttk.Label(frame, text="Morada:", style="Subtitle.TLabel")
-morada_label.pack(pady=(0, 5))
+morada_label.pack(pady=(0, 40), fill="x")
 
 contacto_label = ttk.Label(frame, text="Contacto:", style="Subtitle.TLabel")
 contacto_label.pack(pady=(0, 20))
