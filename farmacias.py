@@ -46,7 +46,7 @@ info_farmacias = {
         "endereco": "Av. Dom Afonso I Duque de Bragança, n.º 11, 5400-025"
     },
     "Costa Gomes": {
-        "telefone": "Desconhecido",
+        "telefone": "276 323 356",
         "endereco": "Rua Direita 172, 5400-220 Chaves"
     },
     "Martins": {
@@ -285,6 +285,3 @@ root.mainloop()
 
 
 '''
-
-
-
