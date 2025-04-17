@@ -11,7 +11,7 @@ def gerar_escala():
         "Barroso",
         "Pereira da Silva",
         "Maldonado",
-        "Barreiros",
+        "Barreiro",
         "Nova Farmácia da Madalena",
         "Paula Files",
         "Farmácia da Nova Ponte",
